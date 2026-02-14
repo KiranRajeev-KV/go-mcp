@@ -1,0 +1,11 @@
+product_id,name,category,price,stock,in_stock
+1,Widget A,Electronics,19.99,100,true
+2,Widget B,Electronics,29.99,50,true
+3,Gadget X,Electronics,49.99,0,false
+4,Tool Alpha,Tools,14.99,200,true
+5,Tool Beta,Tools,24.99,75,true
+6,Component Y,Parts,9.99,500,true
+7,Component Z,Parts,4.99,0,false
+8,Kit Basic,Kits,39.99,25,true
+9,Kit Pro,Kits,79.99,10,true
+10,Kit Premium,Kits,149.99,5,true
