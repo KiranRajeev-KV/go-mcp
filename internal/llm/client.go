@@ -28,6 +28,7 @@ func (tc *ToolConverter) MCPToGeminiToolsSlice(tools []*mcp.Tool) []*genai.Tool 
 	for _, tool := range tools {
 		inputSchema := tc.convertSchema(tool.InputSchema)
 
+		// create a FunctionDeclaration for each tool
 		decl := &genai.FunctionDeclaration{
 			Name:        tool.Name,
 			Description: tool.Description,
@@ -62,17 +63,18 @@ func (tc *ToolConverter) convertSchema(schema any) *genai.Schema {
 
 
 // convert a map[string]any to genai.Schema recursively
-// the schema can be nested, so we do it recursively.
 func (tc *ToolConverter) mapToSchema(m map[string]any) *genai.Schema {
 	schema := &genai.Schema{
 		Type:       genai.TypeObject,
-		Properties: map[string]*genai.Schema{},
+		Properties: map[string]*genai.Schema{}, // default to object type, we will override it if type is specified
 	}
 
+	// handle type if it exists
 	if t, ok := m["type"].(string); ok {
 		schema.Type = genai.Type(t)
 	}
 
+	// handle properties if they exist
 	if props, ok := m["properties"].(map[string]any); ok {
 		for key, val := range props {
 			if propMap, ok := val.(map[string]any); ok {
@@ -81,6 +83,7 @@ func (tc *ToolConverter) mapToSchema(m map[string]any) *genai.Schema {
 		}
 	}
 
+	// handle required fields if they exist
 	if required, ok := m["required"].([]any); ok {
 		for _, r := range required {
 			if rStr, ok := r.(string); ok {
